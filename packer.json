@@ -1,0 +1,36 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "base_ami": "",
+    "swap_size": "",
+    "docker_compose_version": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "ap-northeast-1",
+    "source_ami": "{{user `base_ami`}}",
+    "instance_type": "t2.small",
+    "ssh_username": "ec2-user",
+    "ssh_timeout": "5m",
+    "ami_name": "ebs_base_{{isotime | clean_ami_name}}",
+    "tags": [{
+      "Name": "ebs_base_{{isotime | clean_ami_name}}",
+      "BaseAmi": "{{user `base_ami`}}",
+      "SwapSize": "{{user `swap_size`}}",
+      "DockerComposeVersion": "{{user `docker_compose_version`}}"
+    }]
+  }],
+  "provisioners": [{
+    "type": "ansible",
+    "playbook_file" : "playbook.yml",
+    "extra_arguments": [
+      "--extra-vars",
+      "DOCKER_COMPOSE_VERSION={{user `docker_compose_version`}}",
+      "--extra-vars",
+      "SWAP_SIZE={{user `swap_size`}}"
+    ]
+  }]
+}

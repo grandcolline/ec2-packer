@@ -1,0 +1,7 @@
+{
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "base_ami": "ami-00f9d04b3b3092052",
+    "swap_size": "512",
+    "docker_compose_version": "1.23.1"
+}
